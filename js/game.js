@@ -11,11 +11,17 @@ var canvas = document.getElementById('canvas');
 //get context
 var context = canvas.getContext('2d');
 
+/*
+ * VIEWS
+ */
 //paddle
 var paddleX = 200;
-var paddleY = 400;
+var paddleY = 460;
 var paddleWidth = 100;
-var paddleHeight = 15;
+var paddleHeight = 12;
+var paddleMove;
+var paddleDeltaX;
+var paddleSpeedX = 10;
 
 function drawPaddle() {
     context.fillStyle = 'silver';
@@ -25,7 +31,9 @@ function drawPaddle() {
 //ball
 var ballX = 300;
 var ballY = 300;
-var ballRadius = 10;
+var ballRadius = 7;
+var ballDeltaX;
+var ballDeltaY;
 
 function drawBall() {
     //beginpath when you draw primitive shapes
@@ -81,6 +89,107 @@ function drawBrick(x, y, color) {
     context.strokeRect(x * brickWidth + 1, y * brickHeight + 1, brickWidth, brickHeight);
 }
 
-drawPaddle();
-drawBall();
-createBricks();
+//score
+var score = 0;
+
+function drawScore() {
+    context.fillStyle = 'white';
+    context.font = "20px Helvetica"
+    context.clearRect(0, canvas.height - 30, canvas.width, 30);
+    context.fillText("Score: " + score, 10, canvas.height - 5);
+}
+
+/**
+ * CONTROLLERS
+ */
+
+//ball
+function moveBall() {
+    //handle collisions
+    //if ball hits the top reverse its direction
+    if(ballY + ballDeltaY - ballRadius < 0) {
+        ballDeltaY = -ballDeltaY;
+    }
+    //if ball hits the right or the left
+    if((ballX + ballDeltaX - ballRadius < 0) || (ballX + ballDeltaX - ballRadius) >= canvas.width) {
+        ballDeltaX = -ballDeltaX;
+    }
+    //if ball hits the floor you die
+    if(ballY + ballDeltaY - ballRadius >= canvas.height) {
+        endGame();
+    }
+    //check if ball hits the paddle
+    if(ballY + ballDeltaY + ballRadius > paddleY) {
+        //check if its between the two ends of the paddle
+        if((ballX + ballDeltaX >= paddleX) && (ballX + ballDeltaX <= paddleX + paddleWidth)) {
+            ballDeltaY = -ballDeltaY;
+        }
+    }
+    // Move the ball with updated deltas
+    ballX += ballDeltaX;
+    ballY += ballDeltaY;
+}
+
+//paddle
+function movePaddle() {
+    //check which way we should move
+    if(paddleMove === 'RIGHT') {
+        paddleDeltaX = paddleSpeedX;
+    }
+    else if(paddleMove === 'LEFT') {
+        paddleDeltaX = -paddleSpeedX;
+    }
+    else {
+        paddleDeltaX = 0;
+    }
+    //if paddle reaches side of the screen dont make it move
+    if((paddleX + paddleDeltaX < 0) || (paddleX + paddleDeltaX + paddleWidth >= canvas.width)) {
+        paddleDeltaX = 0;
+    }
+    paddleX += paddleDeltaX;
+}
+//animate
+function animate() {
+    //clear everything before drawing
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    createBricks();
+    drawScore();
+    moveBall();
+    movePaddle();
+    drawPaddle();
+    drawBall();
+}
+
+function startGame() {
+    ballDeltaX = -4;
+    ballDeltaY = -2;
+    paddleMove = 'NONE';
+    paddleDeltaX = 0;
+
+    //call animate function every 200ms
+    gameLoop = setInterval(animate, 20);
+
+    //check if left or right arrow is pressed
+    $(document).keydown(function(event) {
+        if(event.keyCode === 39) {
+            paddleMove = 'RIGHT';
+        }
+        else if(event.keyCode === 37) {
+            paddleMove = 'LEFT';
+        }
+    });
+
+    // check if user lifted finger from keys
+    $(document).keyup(function(event) {
+        if(event.keyCode === 39 || event.keyCode === 37) {
+            paddleMove = 'NONE';
+        }
+    });
+}
+
+function endGame() {
+    clearInterval(gameLoop);
+    context.fillText("Game Over", 6 * brickWidth, canvas.height/2);
+}
+
+startGame();
