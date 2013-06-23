@@ -51,9 +51,11 @@ var brickWidth = canvas.width/bricksPerRow;
 
 //color of the bricks
 var bricks = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-    [3,3,3,3,3,3,3,3,3,3,3,3,3,3] ,
+    [3,3,3,3,3,3,3,3,3,3,3,3,3,3],
     [4,4,4,4,4,4,5,5,4,4,4,4,4,4]
 ]
 
@@ -128,7 +130,9 @@ function moveBall() {
     if(ballY + ballDeltaY + ballRadius > paddleY) {
         //check if its between the two ends of the paddle
         if((ballX + ballDeltaX >= paddleX) && (ballX + ballDeltaX <= paddleX + paddleWidth)) {
-            ballDeltaY = -ballDeltaY;
+            if(paddleMove === 'NONE') {
+                ballDeltaY = -ballDeltaY;
+            }
         }
     }
 
