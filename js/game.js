@@ -11,6 +11,13 @@ var canvas = document.getElementById('canvas');
 //get context
 var context = canvas.getContext('2d');
 
+/**
+ * AUDIOS
+ *
+ */
+var bouncingSound = new Audio("audio/bounce.aif");
+var breakingSound = new Audio("audio/die.ogg");
+var dieSound = new Audio("audio/die.aif");
 /*
  * VIEWS
  */
@@ -133,6 +140,9 @@ function moveBall() {
             if(paddleMove === 'NONE') {
                 ballDeltaY = -ballDeltaY;
             }
+            else {
+                ballDeltaY = -ballDeltaY;
+            }
         }
     }
 
@@ -220,6 +230,7 @@ function collisionYWithBricks() {
 function breakBrick(i, j) {
     bricks[i][j] = 0;
     score += 2;
+    breakingSound.play();
 }
 //animate
 function animate() {
@@ -235,7 +246,7 @@ function animate() {
 
 function startGame() {
     ballDeltaX = -4;
-    ballDeltaY = -2;
+    ballDeltaY = -3;
     paddleMove = 'NONE';
     paddleDeltaX = 0;
 
