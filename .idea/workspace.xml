@@ -6,7 +6,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="/index.html" changelist="143e000a-b753-4e54-90c4-a3ae0c477ef7" time="1371891825466" ignored="false" />
     <file path="/style.css" changelist="143e000a-b753-4e54-90c4-a3ae0c477ef7" time="1371892912877" ignored="false" />
-    <file path="/game.js" changelist="143e000a-b753-4e54-90c4-a3ae0c477ef7" time="1371942706231" ignored="false" />
+    <file path="/game.js" changelist="143e000a-b753-4e54-90c4-a3ae0c477ef7" time="1371974499596" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
       <file leaf-file-name="game.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="27" selection-start="2886" selection-end="2886" vertical-scroll-proportion="2.5">
+            <state line="215" column="24" selection-start="6093" selection-end="6093" vertical-scroll-proportion="-0.11570248">
               <folding />
             </state>
           </provider>
@@ -281,7 +281,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="27" selection-start="2886" selection-end="2886" vertical-scroll-proportion="2.5">
+        <state line="215" column="24" selection-start="6093" selection-end="6093" vertical-scroll-proportion="-0.11570248">
           <folding />
         </state>
       </provider>

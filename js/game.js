@@ -82,6 +82,9 @@ function drawBrick(x, y, color) {
         case 5:
             context.fillStyle = 'purple';
             break;
+        case 0:
+            context.fillStyle = 'black';
+            break;
     }
     //draw the brick with the previously instructed color
     context.fillRect(x * brickWidth, y * brickHeight, brickWidth, brickHeight);
@@ -107,11 +110,14 @@ function drawScore() {
 function moveBall() {
     //handle collisions
     //if ball hits the top reverse its direction
-    if(ballY + ballDeltaY - ballRadius < 0) {
-        ballDeltaY = -ballDeltaY;
+    //check if ball hits a brick from the top or below
+    if((ballY + ballDeltaY - ballRadius < 0) || collisionYWithBricks()) {
+        ballDeltaY = - ballDeltaY;
     }
     //if ball hits the right or the left
-    if((ballX + ballDeltaX - ballRadius < 0) || (ballX + ballDeltaX - ballRadius) >= canvas.width) {
+    //check if ball hits a brick from left or right
+
+    if((ballX + ballDeltaX - ballRadius <= 0) || (ballX + ballDeltaX + ballRadius >= canvas.width) || collisionXWithBricks()) {
         ballDeltaX = -ballDeltaX;
     }
     //if ball hits the floor you die
@@ -125,6 +131,7 @@ function moveBall() {
             ballDeltaY = -ballDeltaY;
         }
     }
+
     // Move the ball with updated deltas
     ballX += ballDeltaX;
     ballY += ballDeltaY;
@@ -147,6 +154,68 @@ function movePaddle() {
         paddleDeltaX = 0;
     }
     paddleX += paddleDeltaX;
+}
+
+//collision with bricks
+//checks for x
+function collisionXWithBricks() {
+    var collidedX = false;
+    for(var i=0; i < bricks.length; i++) {
+        for(var j=0; j < bricks[i].length; j++) {
+            if(bricks[i][j] != 0) {
+                var brickX = j * brickWidth;
+                var brickY = i * brickHeight;
+                // if hits
+                if(
+                    //from the left
+                    ((ballX + ballDeltaX + ballRadius >= brickX) && (ballX + ballRadius <= brickX))
+                    ||
+                    //from the right
+                    ((ballX + ballDeltaX - ballRadius <= brickX + brickWidth) && (ballX - ballRadius >= brickX + brickWidth))
+                    ) {
+                    if((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY + ballDeltaY + ballRadius >= brickY)) {
+                        //break the brick
+                        breakBrick(i, j);
+                        collidedX = true;
+                    }
+                }
+            }
+        }
+    }
+    return collidedX;
+}
+
+//checks for y
+function collisionYWithBricks() {
+    var collidedY = false;
+    for(var i=0; i < bricks.length; i++) {
+        for(var j=0; j < bricks[i].length; j++) {
+            if(bricks[i][j] != 0) {
+                var brickX = j * brickWidth;
+                var brickY = i * brickHeight;
+                if(
+                    //from below
+                    ((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY - ballRadius >= brickY + brickHeight))
+                    ||
+                    //from above
+                    ((ballY + ballRadius <= brickY) && (ballY + ballDeltaY - ballRadius >= brickY))
+                    ) {
+                    if (ballX + ballDeltaX + ballRadius >= brickX &&
+                        ballX + ballDeltaX - ballRadius <= brickX + brickWidth){
+                        // weaken brick and increase score
+                        breakBrick(i,j);
+                        collidedY = true;
+                    }
+                }
+            }
+        }
+    }
+    return collidedY;
+}
+//brick breaker
+function breakBrick(i, j) {
+    bricks[i][j] = 0;
+    score += 2;
 }
 //animate
 function animate() {
