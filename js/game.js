@@ -15,9 +15,9 @@ var context = canvas.getContext('2d');
  * AUDIOS
  *
  */
-var bouncingSound = new Audio("audio/bounce.aif");
-var breakingSound = new Audio("audio/die.ogg");
-var dieSound = new Audio("audio/die.aif");
+var bouncingSound = new Audio("audio/bounce.ogg");
+var breakingSound = new Audio("audio/break.ogg");
+var dieSound = new Audio("audio/die.ogg");
 /*
  * VIEWS
  */
@@ -137,6 +137,7 @@ function moveBall() {
     if(ballY + ballDeltaY + ballRadius > paddleY) {
         //check if its between the two ends of the paddle
         if((ballX + ballDeltaX >= paddleX) && (ballX + ballDeltaX <= paddleX + paddleWidth)) {
+            bouncingSound.play();
             if(paddleMove === 'NONE') {
                 ballDeltaY = -ballDeltaY;
             }
@@ -273,6 +274,7 @@ function startGame() {
 
 function endGame() {
     clearInterval(gameLoop);
+    dieSound.play();
     context.fillText("Game Over", 6 * brickWidth, canvas.height/2);
 }
 
