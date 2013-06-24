@@ -142,9 +142,7 @@ function moveBall() {
             ballDeltaY = -ballDeltaY;
 
             if(paddleMove === 'LEFT') {
-                if(ballDeltaX - 2 > - 4) {
-                    ballDeltaX -= 2;
-                }
+                ballDeltaX -= 2;
             }
             else if(paddleMove === 'RIGHT') {
                 ballDeltaX += 2;
@@ -281,6 +279,7 @@ function endGame() {
     clearInterval(gameLoop);
     dieSound.play();
     context.fillText("Game Over", 6 * brickWidth, canvas.height/2);
+    context.fillText("Score: " + score, 6 * brickWidth, canvas.height/2 + 20);
 }
 
 startGame();
