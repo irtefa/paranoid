@@ -142,7 +142,9 @@ function moveBall() {
             ballDeltaY = -ballDeltaY;
 
             if(paddleMove === 'LEFT') {
-                ballDeltaX -= 2;
+                if(ballDeltaX - 2 > - 4) {
+                    ballDeltaX -= 2;
+                }
             }
             else if(paddleMove === 'RIGHT') {
                 ballDeltaX += 2;
