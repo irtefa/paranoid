@@ -138,11 +138,14 @@ function moveBall() {
         //check if its between the two ends of the paddle
         if((ballX + ballDeltaX >= paddleX) && (ballX + ballDeltaX <= paddleX + paddleWidth)) {
             bouncingSound.play();
-            if(paddleMove === 'NONE') {
-                ballDeltaY = -ballDeltaY;
+
+            ballDeltaY = -ballDeltaY;
+
+            if(paddleMove === 'LEFT') {
+                ballDeltaX -= 2;
             }
-            else {
-                ballDeltaY = -ballDeltaY;
+            else if(paddleMove === 'RIGHT') {
+                ballDeltaX += 2;
             }
         }
     }
